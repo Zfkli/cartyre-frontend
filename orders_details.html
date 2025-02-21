@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Tyre Shop | Products</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .product-card img {
+            width: 250px;
+            height: 250px;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .product-card h5{
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+        footer a {
+            text-decoration: none;
+            color: white;
+        }
+        footer a:hover {
+            color: #0d6efd;
+        }
+        html, body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            flex: 1;
+        }
+        .expanded {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-align: left;
+            width: 1 1 100%;
+            max-width: 100%;
+        }
+        .expanded img {
+            width: 300px;
+            height: 300px;
+            margin-right: 20px;
+        }
+        .details-container {
+            flex: 1;
+        }
+        .hidden {
+            display: none;
+        }
+        .col-md-4.expanded-card {
+            width: 100%;
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Car Tyre Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="products.html">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="customer.html">Customers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="staffs.html">Staffs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="order.html">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Products Section -->
+    <div class="container my-5">
+        <h2 class="text-center">Our Products</h2>
+        <div class="row" id="product-container">
+            <!--Dynamic Products Cards-->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("http://localhost:3000/products")
+                .then((response) => response.json())
+                .then((data) => {
+                    const productContainer = document.getElementById("product-container");
+                    productContainer.innerHTML = ""; // Clear existing content
+
+                    data.forEach((product, index) => {
+                        const card = document.createElement("div");
+                        card.classList.add("col-md-4", "mb-4");
+                        card.innerHTML += `
+                            <div class="product-card" id="product-${index}">
+                                <img src="picture/products/${product.fld_product_id}.jpg" class="img-fluid" alt="Picture of ${product.fld_product_name}">
+                                <h5>${product.fld_product_name}</h5>
+                                <p><strong>Price</strong> RM${product.fld_price.toFixed(2)}</p>
+                                <button class="btn btn-warning details-btn">Details</button>
+                                <div class="hidden details-container">
+                                    <p><strong>Brand: </strong>${product.fld_brand}</p>
+                                    <p><strong>Tyre Size: </strong>${product.fld_tyre_size}</p>
+                                    <p><strong>Stock:</strong>${product.fld_stock_left}</p>
+                                    <p><strong>Warranty: </strong>${product.fld_warranty_length}</p>
+                                </div>
+                            </div>`;
+                        productContainer.appendChild(card);
+                    });
+
+                    document.querySelectorAll(".details-btn").forEach((button, index) => {
+                        button.addEventListener("click", function() {
+                            const card = document.getElementById(`product-${index}`);
+                            card.classList.toggle("expanded");
+                            const parentCol = card.parentElement;
+                            parentCol.classList.toggle("expanded-card");
+                            const details = card.querySelector(".details-container");
+                            details.classList.toggle("hidden");
+
+                            if (card.classList.contains("expanded")) {
+                                button.textContent = "Close"
+                            } else {
+                                button.textContent = "Details";
+                            }
+                        });
+                    });
+                })
+                .catch((error) => console.error("Error fetching product data:", error));
+        });
+    </script>
+    
+    <!--Footer-->
+    <footer class="bg-dark text-white text-center py-4">
+        <p>&copy; 2025 Car Tyre Shop. All Rights Reserved.</p>
+        <div>
+            <a href="#" class="me-3"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="me-3"><i class="bi bi-twitter"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
