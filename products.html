@@ -87,7 +87,7 @@
             <!--Dynamic Products Cards-->
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    fetch("http://localhost:3000/products")
+                    fetch("https://cartyre-backend-production.up.railway.app/products")
                         .then((response) => response.json())
                         .then((data) => {
                             const productContainer = document.querySelector(".row");
@@ -120,7 +120,7 @@
                                     const productID = this.dataset.id;
 
                                     if (confirm("Are you sure you want to delete this product?")) {
-                                        fetch(`http://localhost:3000/products/${productID}`, {
+                                        fetch(`https://cartyre-backend-production.up.railway.app/products/${productID}`, {
                                             method: "DELETE",
                                         })
                                         .then((response) => response.json())
@@ -207,7 +207,7 @@
 
             //Show modal when Add Product is clicked
             addProductBtn.addEventListener("click", function() {
-                fetch("http://localhost:3000/products/last-id")
+                fetch("https://cartyre-backend-production.up.railway.app/products/last-id")
                     .then(response => response.json())
                 .then(data => {
                     productIDField.value = data.nextID;
@@ -243,7 +243,7 @@
                     fld_product_image: document.getElementById("productImg").value.trim()
                 };
 
-                fetch("http://localhost:3000/products", {
+                fetch("https://cartyre-backend-production.up.railway.app/products", {
                     method: "POST",
                     headers: { "Content-Type": "application/json"},
                     body: JSON.stringify(productData)
