@@ -112,6 +112,115 @@
             </script>
         </div>
     </div>
+
+    <!--Add Customer Button-->
+    <div class="container text-center my-3">
+        <button class="btn btn-success" id="addCustomer">+ Add Customer</button>
+    </div>
+
+    <!--Add Customer Modal-->
+    <div class="modal fade" id="addCustomerModal" tabindex="1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Customer</h5>
+                    <button class="btn-close" type="button" id="closeModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCustomerForm">
+                        <div class="mb3">
+                            <div class="form-label">Customer ID</div>
+                            <div class="form-control" type="text" id="customerID" required></div>
+                        </div>
+                        <div class="mb3">
+                            <div class="form-label">First Name</div>
+                            <div class="form-control" type="text" id="customerFName" required></div>
+                        </div>
+                        <div class="mb3">
+                            <div class="form-label">Last Name</div>
+                            <div class="form-control" type="text" id="customerLName" required></div>
+                        </div>
+                        <div class="mb3">
+                            <div class="form-label">Gender</div>
+                            <div class="form-control" type="text" id="customerGender" required></div>
+                        </div>
+                        <div class="mb3">
+                            <div class="form-label">Phone Number</div>
+                            <div class="form-control" type="text" id="customerPhone" required></div>
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-secondary" type="button" id="cancelBtn">Cancel</button>
+                            <button class="btn btn-primary" type="submit">Save Customer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addCustomerBtn = document.getElementById("addCustomer");
+            const customerIDField = document.getElementById("customerID");
+            const addCustomerModal = new bootstrap.Modal(document.getElementById("addCustomerModal"));
+            const closeModal = document.getElementById("closeModal");
+            const cancelBtn = document.getElementById("cancelBtn");
+            const addCustomerForm = document.getElementById("addCustomerForm");
+
+
+            //Show modal when Add Customer is clicked
+            addCustomerBtn.addEventListener("click", function() {
+                fetch("https://cartyre-backend-production.up.railway.app/customers/last-id")
+                    .then(response => response.json())
+                .then(data => {
+                    customerIDField.value = data.nextID;
+                    customerIDField.setAttribute("readonly", true);
+                    addCustomerModal.show()
+                })
+                .catch(error => {
+                    console.error("Error fetching last product ID: ", error);
+                    alert("Failed to generate Product ID");
+                })
+            });
+
+            //Close modal when clicking cancel or X button
+            function closeform() {
+                addCustomerModal.hide();
+                addCustomerForm.reset();
+            }
+            closeModal.addEventListener("click", closeform);
+            cancelBtn.addEventListener("click", closeform);
+
+            //Handle form submission
+            addCustomerForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                const customerData = {
+                    fld_customer_id: customerIDField.value,
+                    fld_customer_fname: document.getElementById("customerFName").value.trim(),
+                    fld_customer_lname: document.getElementById("customerLName").value.trim(),
+                    fld_customer_gender: document.getElementById("customerGender").value.trim(),
+                    fld_customer_phone: document.getElementById("customerPhone").value.trim()
+                };
+
+                fetch("https://cartyre-backend-production.up.railway.app/products", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json"},
+                    body: JSON.stringify(customerData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    closeform();
+                    location.reload;
+                })
+                .catch(error => {
+                    console.error("Error adding customer: ", error);
+                    alert("Failed to add customer");
+                });
+            });
+        });
+    </script>
     
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3">
