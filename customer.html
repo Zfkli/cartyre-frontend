@@ -130,23 +130,23 @@
                     <form id="addCustomerForm">
                         <div class="mb3">
                             <div class="form-label">Customer ID</div>
-                            <div class="form-control" type="text" id="customerID" required></div>
+                            <input class="form-control" type="text" id="customerID" required>
                         </div>
                         <div class="mb3">
                             <div class="form-label">First Name</div>
-                            <div class="form-control" type="text" id="customerFName" required></div>
+                            <input class="form-control" type="text" id="customerFName" required>
                         </div>
                         <div class="mb3">
                             <div class="form-label">Last Name</div>
-                            <div class="form-control" type="text" id="customerLName" required></div>
+                            <input class="form-control" type="text" id="customerLName" required>
                         </div>
                         <div class="mb3">
                             <div class="form-label">Gender</div>
-                            <div class="form-control" type="text" id="customerGender" required></div>
+                            <input class="form-control" type="text" id="customerGender" required>
                         </div>
                         <div class="mb3">
                             <div class="form-label">Phone Number</div>
-                            <div class="form-control" type="text" id="customerPhone" required></div>
+                            <input class="form-control" type="text" id="customerPhone" required>
                         </div>
                         <div class="text-end">
                             <button class="btn btn-secondary" type="button" id="cancelBtn">Cancel</button>
@@ -203,7 +203,7 @@
                     fld_customer_phone: document.getElementById("customerPhone").value.trim()
                 };
 
-                fetch("https://cartyre-backend-production.up.railway.app/products", {
+                fetch("https://cartyre-backend-production.up.railway.app/customers", {
                     method: "POST",
                     headers: { "Content-Type": "application/json"},
                     body: JSON.stringify(customerData)
@@ -212,7 +212,7 @@
                 .then(data => {
                     alert(data.message);
                     closeform();
-                    location.reload;
+                    location.reload();
                 })
                 .catch(error => {
                     console.error("Error adding customer: ", error);
