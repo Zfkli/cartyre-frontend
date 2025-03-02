@@ -240,7 +240,7 @@ document.addEventListener("DOMContentLoaded", function() {
             fld_warranty_length: parseInt(document.getElementById("editProductWarranty").value)
         };
 
-        fetch(`https://cartyre-backend-production.up.railway.app/products/update/${fld_product_id}`, {
+        fetch(`https://cartyre-backend-production.up.railway.app/products/update/${updatedProduct.fld_product_id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedProduct)
