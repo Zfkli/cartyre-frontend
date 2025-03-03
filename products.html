@@ -144,6 +144,51 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Product</h5>
+                <button class="btn-close" type="button" id="closeEditModal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm">
+                    <input type="hidden" id="editProductID"> <!-- Hidden field for ID -->
+                    <div class="mb-3">
+                        <div class="form-label">Product Name</div>
+                        <input type="text" class="form-control" id="editProductName" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Price (RM)</div>
+                        <input type="number" class="form-control" id="editProductPrice" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Brand</div>
+                        <input type="text" class="form-control" id="editProductBrand" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Tyre Size</div>
+                        <input type="text" class="form-control" id="editProductSize" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Stock</div>
+                        <input type="number" class="form-control" id="editProductStock" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-label">Warranty (Year)</div>
+                        <input type="number" class="form-control" id="editProductWarranty" required>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-secondary" type="button" id="cancelEditBtn">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
     
     <!--Footer-->
     <footer class="bg-dark text-white text-center py-4">

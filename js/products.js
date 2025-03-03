@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <p><strong>Stock:</strong>${product.fld_stock_left}</p>
                                 <p><strong>Warranty: </strong>${product.fld_warranty_length}</p>
                                 <div class="product-buttons">
-                                    <button class="btn btn-warning me-2">Edit</button>
+                                    <button class="btn btn-warning edit-btn me-2" data-id="${product.fld_product_id}">Edit</button>
                                     <button class="btn btn-danger delete-btn" data-id="${product.fld_product_id}">Delete</button>
                                 </div>
                             </div>
@@ -110,6 +110,72 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error("Error adding product:", error);
             alert("Faied to add product");
+        });
+    });
+});
+
+//edit
+document.addEventListener("DOMContentLoaded", function() {
+    const editProductModal = new bootstrap.Modal(document.getElementById("editProductModal"));
+    const closeEditModal = document.getElementById("closeEditModal");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const editProductForm = document.getElementById("editProductForm");
+
+    // Open Edit Modal and Populate Fields
+    document.addEventListener("click", function(event) {
+        if (event.target.classList.contains("edit-btn")) {
+            const productID = event.target.dataset.id;
+            fetch(`https://cartyre-backend-production.up.railway.app/products/${productID}`)
+                .then(response => response.json())
+                .then(product => {
+                    document.getElementById("editProductID").value = product.fld_product_id;
+                    document.getElementById("editProductName").value = product.fld_product_name;
+                    document.getElementById("editProductPrice").value = product.fld_price;
+                    document.getElementById("editProductBrand").value = product.fld_brand;
+                    document.getElementById("editProductSize").value = product.fld_tyre_size;
+                    document.getElementById("editProductStock").value = product.fld_stock_left;
+                    document.getElementById("editProductWarranty").value = product.fld_warranty_length;
+                    editProductModal.show();
+                })
+                .catch(error => console.error("Error fetching product details:", error));
+        }
+    });
+
+    // Close Modal on Cancel
+    function closeEditForm() {
+        editProductModal.hide();
+        editProductForm.reset();
+    }
+    closeEditModal.addEventListener("click", closeEditForm);
+    cancelEditBtn.addEventListener("click", closeEditForm);
+
+    // Handle Form Submission (Update Product)
+    editProductForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const updatedProduct = {
+            fld_product_id: document.getElementById("editProductID").value,
+            fld_product_name: document.getElementById("editProductName").value.trim(),
+            fld_price: parseFloat(document.getElementById("editProductPrice").value),
+            fld_brand: document.getElementById("editProductBrand").value.trim(),
+            fld_tyre_size: document.getElementById("editProductSize").value.trim(),
+            fld_stock_left: parseInt(document.getElementById("editProductStock").value),
+            fld_warranty_length: parseInt(document.getElementById("editProductWarranty").value)
+        };
+
+        fetch(`https://cartyre-backend-production.up.railway.app/products/${updatedProduct.fld_product_id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedProduct)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            closeEditForm();
+            location.reload();
+        })
+        .catch(error => {
+            console.error("Error updating product:", error);
+            alert("Failed to update product");
         });
     });
 });
