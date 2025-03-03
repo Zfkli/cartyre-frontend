@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
                             <img src="picture/products/${product.fld_product_id}.jpg" class="product-img" alt="Picture of ${product.fld_product_name}">
                             <div class="product-details">
                                 <h5>${product.fld_product_name}</h5>
+                                <p><strong>ID: </strong> ${product.fld_product_id}</p>
                                 <p><strong>Price: </strong> RM${product.fld_price.toFixed(2)}</p>
                                 <p><strong>Brand: </strong>${product.fld_brand}</p>
                                 <p><strong>Tyre Size: </strong>${product.fld_tyre_size}</p>
@@ -135,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById("editProductSize").value = product.fld_tyre_size;
                     document.getElementById("editProductStock").value = product.fld_stock_left;
                     document.getElementById("editProductWarranty").value = product.fld_warranty_length;
+                    
                     editProductModal.show();
                 })
                 .catch(error => console.error("Error fetching product details:", error));
@@ -159,11 +161,12 @@ document.addEventListener("DOMContentLoaded", function() {
             fld_brand: document.getElementById("editProductBrand").value.trim(),
             fld_tyre_size: document.getElementById("editProductSize").value.trim(),
             fld_stock_left: parseInt(document.getElementById("editProductStock").value),
-            fld_warranty_length: parseInt(document.getElementById("editProductWarranty").value)
+            fld_warranty_length: parseInt(document.getElementById("editProductWarranty").value),
+            fld_product_image: document.getElementById("editProductID").value.trim()
         };
 
-        fetch(`https://cartyre-backend-production.up.railway.app/products/${updatedProduct.fld_product_id}`, {
-            method: "PUT",
+        fetch(`https://cartyre-backend-production.up.railway.app/products/update/${updatedProduct.fld_product_id}`, {
+            method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(updatedProduct)
         })
